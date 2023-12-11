@@ -6,8 +6,6 @@ import markerIcon2x from "../../../assets/marker-icon-2x.png";
 import { useRef } from "react";
 
 const Map = (props) => {
-  console.log(props.coordinates.lat);
-  console.log(props.coordinates.lng);
   const mapRef = useRef();
 
   const markerIcon = new L.Icon({
