@@ -17,7 +17,6 @@ const Users = () => {
         const response = await fetch("http://localhost:5000/api/users");
 
         const responseData = await response.json();
-        console.log(responseData);
 
         if (!response.ok) {
           throw new Error(responseData.message);
@@ -36,7 +35,7 @@ const Users = () => {
   const errorHandler = () => {
     setError(null);
   };
-  console.log(loadedUsers);
+  
   return (
     <Fragment>
       <ErrorModal error={error} onClear={errorHandler} />
