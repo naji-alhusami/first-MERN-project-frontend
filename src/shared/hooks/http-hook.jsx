@@ -7,11 +7,13 @@ export const useHttpClient = () => {
   const activeHttpRequests = useRef([]);
 
   const sendRequest = useCallback(
-    //  we use useCallback to avoid infinite loop so when the comp rerender the function never recreated
+    //  we use useCallback to avoid infinite loop so when the comp rerender the function never recreated, in Addition the Users file has useEffect which has function as dependency so it is better to use useCallback
     async (url, method = "GET", body = null, headers = {}) => {
       setIsLoading(true);
+
       const httpAortCtrl = new AbortController(); // we are using this because the user maybe will send request for login or signup and then he will go back while the request is sending, so this aborted the request
       activeHttpRequests.current.push(httpAortCtrl);
+
       try {
         const response = await fetch(url, {
           method,
@@ -34,10 +36,11 @@ export const useHttpClient = () => {
 
         return responseData;
       } catch (err) {
-        setError(err.message);
-        setIsLoading(false);
-
-        throw err;
+        if (!err.message === "The user aborted a request.") {
+          setError(err.message);
+          setIsLoading(false);
+          throw err;
+        }
       }
     },
     []
