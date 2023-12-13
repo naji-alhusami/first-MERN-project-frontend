@@ -4,11 +4,12 @@ import Card from "../../shared/components/UIElements/Card";
 import Button from "../../shared/components/FormElements/Button";
 import Modal from "../../shared/components/UIElements/Modal";
 import Map from "../../shared/components/UIElements/Map";
-import { AuthContext } from "../../shared/context/auth-context";
-import "./PlaceItem.css";
-import { useHttpClient } from "../../shared/hooks/http-hook";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
+import { AuthContext } from "../../shared/context/auth-context";
+import { useHttpClient } from "../../shared/hooks/http-hook";
+
+import "./PlaceItem.css";
 
 const PlaceItem = (props) => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -78,10 +79,7 @@ const PlaceItem = (props) => {
           </Fragment>
         }
       >
-        <p>
-          Do you want to proceed and delete this place? Please note that it
-          cannot be undone thereafter.
-        </p>
+        <p>Do you want to proceed and delete this place?</p>
       </Modal>
       <li className="place-item">
         <Card className="place-item__content">
@@ -98,13 +96,14 @@ const PlaceItem = (props) => {
             <Button inverse onClick={openMapHandler}>
               VIEW ON MAP
             </Button>
-            {auth.isLoggedIn && (
-              <>
-                <Button to={`/places/${props.id}`}>EDIT</Button>
-                <Button danger onClick={showDeleteWarningHandler}>
-                  DELETE
-                </Button>
-              </>
+            {auth.userId === props.creatorId && (
+              <Button to={`/places/${props.id}`}>EDIT</Button>
+            )}
+
+            {auth.userId === props.creatorId && (
+              <Button danger onClick={showDeleteWarningHandler}>
+                DELETE
+              </Button>
             )}
           </div>
         </Card>

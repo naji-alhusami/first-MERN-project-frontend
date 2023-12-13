@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { Fragment, useRef } from "react";
 import ReactDOM from "react-dom";
 import { CSSTransition } from "react-transition-group";
 
@@ -32,7 +32,7 @@ const Modal = (props) => {
   const nodeRef = useRef(null);
 
   return (
-    <div>
+    <Fragment>
       {props.show && <Backdrop onClick={props.onCancel} />}
       <CSSTransition
         nodeRef={nodeRef}
@@ -44,7 +44,7 @@ const Modal = (props) => {
       >
         <ModalOverlay {...props} nodeRef={nodeRef} />
       </CSSTransition>
-    </div>
+    </Fragment>
   );
 };
 
