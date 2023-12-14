@@ -14,6 +14,7 @@ import { AuthContext } from "../../shared/context/auth-context";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import { useHttpClient } from "../../shared/hooks/http-hook";
+import ImageUpload from "../../shared/components/FormElements/ImageUpload";
 
 const Auth = () => {
   const auth = useContext(AuthContext);
@@ -41,6 +42,7 @@ const Auth = () => {
         {
           ...formState.inputs,
           name: undefined,
+          image: undefined,
         },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       );
@@ -51,6 +53,10 @@ const Auth = () => {
           ...formState.inputs,
           name: {
             value: "",
+            isValid: false,
+          },
+          image: {
+            value: null,
             isValid: false,
           },
         },
@@ -81,15 +87,21 @@ const Auth = () => {
       }
     } else {
       try {
+        const formData = new FormData(); // browser api
+        formData.append("name", formState.inputs.name.value);
+        formData.append("email", formState.inputs.email.value);
+        formData.append("password", formState.inputs.password.value);
+        formData.append("image", formState.inputs.image.value);
         const responseData = await sendRequest(
           "http://localhost:5000/api/users/signup",
           "POST",
-          JSON.stringify({
-            name: formState.inputs.name.value,
-            email: formState.inputs.email.value,
-            password: formState.inputs.password.value,
-          }),
-          { "Content-Type": "application/json" }
+          // }), // WE USE FORMDATA APPEN INSTEAD TO HANDLE IMAGES, AND WE DO NOT NEED CONTENT TYPE BECUASE FORMDATA HANDLE IT AUTOMATICALLY
+          formData
+          // JSON.stringify({
+          //   name: formState.inputs.name.value,
+          //   email: formState.inputs.email.value,
+          //   password: formState.inputs.password.value,
+          // { "Content-Type": "application/json" }
         );
 
         auth.login(responseData.user.id);
@@ -116,6 +128,14 @@ const Auth = () => {
               validators={[VALIDATOR_REQUIRE()]}
               errorText="Please enter a name."
               onInput={inputHandler}
+            />
+          )}
+          {!isLoginMode && (
+            <ImageUpload
+              id="image"
+              onInput={inputHandler}
+              errorText="Please provide image."
+              center
             />
           )}
           <Input
