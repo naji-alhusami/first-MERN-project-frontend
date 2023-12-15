@@ -23,5 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-# Ignoring .env file
+# Ignoring .env files
 .env
+.env.production

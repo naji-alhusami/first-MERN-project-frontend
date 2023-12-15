@@ -15,7 +15,7 @@ const UserPlaces = () => {
     const fetchPlaces = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/places/user/${userId}`
+          import.meta.env.VITE_BACKEND_URL + `/places/user/${userId}`
         );
         setLoadedPlaces(responseData.places);
       } catch (err) {
@@ -30,8 +30,6 @@ const UserPlaces = () => {
       prevPlaces.filter((place) => place.id !== deletedPlaceId)
     );
   };
-  console.log(isLoading);
-  console.log(loadedPlaces);
 
   return (
     <React.Fragment>

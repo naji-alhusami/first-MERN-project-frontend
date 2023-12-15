@@ -54,7 +54,7 @@ const NewPlace = () => {
       // formData.append("creator", auth.userId);
       formData.append("image", formState.inputs.image.value);
       await sendRequest(
-        "http://localhost:5000/api/places",
+        import.meta.env.VITE_BACKEND_URL + "/places",
         "POST",
         formData,
         { Authorization: "Bearer " + auth.token }

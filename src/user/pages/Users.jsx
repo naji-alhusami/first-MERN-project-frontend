@@ -9,12 +9,12 @@ import { useHttpClient } from "../../shared/hooks/http-hook";
 const Users = () => {
   const [loadedUsers, setLoadedUsers] = useState(false);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const responseData = await sendRequest(
-          "http://localhost:5000/api/users"
+          import.meta.env.VITE_BACKEND_URL + "/users"
         );
         setLoadedUsers(responseData.users);
       } catch (err) {
